@@ -173,6 +173,12 @@ By default, this power only includes Terraform Registry tools (providers, module
 
 This uses shell expansion to read the token from your environment. Set it with `export TFE_TOKEN=your-api-token-here` before launching Kiro.
 
+> ⚠️ **IMPORTANT: Docker Container Restart Required**
+> 
+> After adding or changing `TFE_TOKEN`, `TFE_ADDRESS`, or any other environment variables, you **must restart the Docker container** for the changes to take effect. The MCP server runs inside Docker and only reads environment variables at container startup.
+> 
+> To restart: Stop the running container and reconnect the MCP server in Kiro, or restart Kiro entirely.
+
 ### Terraform Enterprise (Custom Endpoint)
 
 For organizations using Terraform Enterprise with a custom endpoint, add the `TFE_ADDRESS` environment variable:
@@ -220,7 +226,9 @@ For organizations using Terraform Enterprise with a custom endpoint, add the `TF
 |-------|----------|
 | Provider/Module not found | Use `search_*` first to get valid IDs |
 | Unauthorized | Set `TFE_TOKEN` env var |
+| Token set but still unauthorized | **Restart the Docker container** - env vars are only read at startup |
 | Docker not running | Start Docker daemon |
+| Changed TFE_ADDRESS but still hitting wrong endpoint | **Restart the Docker container** after changing any env vars |
 
 ## Resources
 
